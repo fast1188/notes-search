@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test outputs
+.coverage
+htmlcov/
+
+# Secrets - NEVER commit these!
+*.key.txt
+*_key.txt
+.env
+.env.local
+.env.production
+api_keys.txt
+secrets.json
+
+# Runtime data
+*.log
+logs/
+*.pid
+
+# Node (in case)
+node_modules/
+npm-debug.log*
