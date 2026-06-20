@@ -119,6 +119,46 @@ class TestSearch(unittest.TestCase):
         self.assertNotIn("b.txt", out)
         self.assertNotIn("c.py", out)
 
+    def test_filename_only(self):
+        """-F 只匹配文件名, 不扫内容"""
+        write_file(self.tmp / "todo.md", "no keyword in content here")
+        write_file(self.tmp / "notes.md", "todo also mentioned in body, should not be hit by -F")
+        write_file(self.tmp / "readme.md", "completely unrelated")
+        rc, out, _ = run_search("todo", "-F", str(self.tmp))
+        self.assertEqual(rc, 0)
+        files = [ln.replace("\\", "/") for ln in out.strip().splitlines()]
+        # 只匹配文件名含 "todo" 的 todo.md, 不应出 notes.md (内容里含 todo)
+        self.assertTrue(any("todo.md" in f for f in files))
+        self.assertFalse(any("notes.md" in f for f in files))
+        self.assertFalse(any("readme.md" in f for f in files))
+
+    def test_json_output(self):
+        """--json 输出 JSON 结构, 含 pattern/path/file_count/match_count/results"""
+        import json as _json
+        write_file(self.tmp / "a.md", "Hello world\nPython is great")
+        write_file(self.tmp / "b.md", "no match here")
+        rc, out, _ = run_search("Python", "--json", str(self.tmp))
+        self.assertEqual(rc, 0)
+        data = _json.loads(out)
+        self.assertEqual(data["pattern"], "Python")
+        self.assertEqual(data["file_count"], 1)
+        self.assertEqual(data["match_count"], 1)
+        self.assertEqual(len(data["results"]), 1)
+        self.assertTrue(data["results"][0]["path"].endswith("a.md"))
+        self.assertEqual(data["results"][0]["matches"][0]["line"], 2)
+        self.assertEqual(data["results"][0]["matches"][0]["content"], "Python is great")
+
+    def test_json_no_match(self):
+        """--json 无命中时 file_count=0 + exit 2"""
+        import json as _json
+        write_file(self.tmp / "a.md", "Hello")
+        rc, out, _ = run_search("NONEXIST", "--json", str(self.tmp))
+        self.assertEqual(rc, 2)
+        data = _json.loads(out)
+        self.assertEqual(data["file_count"], 0)
+        self.assertEqual(data["match_count"], 0)
+        self.assertEqual(data["results"], [])
+
 
 if __name__ == "__main__":
     # 允许直接 python tests/test_search.py
