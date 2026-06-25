@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Language](https://img.shields.io/badge/language-python-green)
 ![Platform](https://img.shields.io/badge/platform-windows-lightgrey)
-![Stars](https://img.shields.io/github/stars/fast118/notes-search?style=social)
+![Stars](https://img.shields.io/github/stars/fast1188/notes-search?style=social)
 
 ## 是什么
 
@@ -25,7 +25,7 @@
 
 ```bash
 # 1. 克隆
-git clone https://github.com/fast118/notes-search.git
+git clone https://github.com/fast1188/notes-search.git
 cd notes-search
 
 # 2. 仅用 Python 3.10+ 标准库，零第三方依赖
@@ -106,4 +106,4 @@ MIT © fast118
 
 ![微信群](assets/wechat-qr.png)
 
-或提 [GitHub Issue](https://github.com/fast118/notes-search/issues)
+或提 [GitHub Issue](https://github.com/fast1188/notes-search/issues)
